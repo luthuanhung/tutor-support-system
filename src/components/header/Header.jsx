@@ -17,7 +17,7 @@ import MessageWindow from './MessageWindow'; // Assuming MessageWindow.js is in 
 
 // --- Navigation Items ---
 const defaultHeaderList = [
-    { title: "Home", path: "/home" },
+    { title: "Home", path: "/" },
     { title: "Courses", path: "/courses" },
     { title: "Sessions", path: "/sessions" },
 ]
@@ -49,7 +49,7 @@ export default function Header() {
 
     return (
     // Set position to relative to contain the absolute mobile menu
-    <header className="bg-primary text-white shadow-md mb-4 relative">
+    <header className="bg-primary text-white shadow-md relative">
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
             <div className="flex items-center justify-between h-16">
             

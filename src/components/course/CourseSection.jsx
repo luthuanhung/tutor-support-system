@@ -20,9 +20,10 @@ import {
     FaUnlock,
 } from 'react-icons/fa';
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
-export default function CourseSection({ title, items }) {
-
+export default function CourseSection({ title, items, onViewDetails }) {
+    const navigate = useNavigate();
     const getIconElement = (type) => {
         const lowerType = type ? type.toLowerCase() : 'default';
 
@@ -113,7 +114,7 @@ export default function CourseSection({ title, items }) {
                             
                             <div className='flex flex-row relative items-center gap-4'>
                                 {getIconElement(item.type)}
-                                <h3 className="font-semibold text-gray-800 hover:text-blue-500 hover:underline cursor-pointer select-none">{item.title}</h3>
+                                <h3 className="font-semibold text-gray-800 hover:text-blue-500 hover:underline cursor-pointer select-none" onClick={() => onViewDetails(item)}>{item.title}</h3>
                                 <div className='right-4 absolute flex flex-row gap-4'>
                                     {item.isLocked ? 
                                         <FaLock className={`w-5 h-5 hover:text-gray-800 cursor-pointer`} onClick={() => handleToggleLock(item.id)}/> :

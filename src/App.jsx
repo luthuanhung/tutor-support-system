@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 /**********   ADD PAGE ROUTE HERE   **********/
+import HomePage from './pages/Home/HomePage'
 import PrivateStorage from './pages/Resource/PrivateStorage'
 import {
   ChangePassword,
@@ -9,19 +10,24 @@ import {
   ResetPassword,
 } from './pages/Authentication'
 import CourseStructure from './pages/Resource/CourseStructure'
+import FileDetails from './pages/Resource/FileDetails'
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<PrivateStorage />} />
+      {/* GENERAL */}
+      <Route path="/" element={<HomePage/>} />
+      <Route path="/about" element={<h1>About Page</h1>} />
+
+      {/* LOGIN MODULE */}
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/password-reset-notification" element={<PasswordReset />} />
       <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/confirmation" element={<Confirmation />} />
-      <Route path="/" element={<PrivateStorage/>} />
+      {/* RESOURCE MODULE */}
+      <Route path="/user/private" element={<PrivateStorage />} />
       <Route path="/courses" element={<CourseStructure/>} />
-      <Route path="/about" element={<h1>About Page</h1>} />
     </Routes>
   )
 }
