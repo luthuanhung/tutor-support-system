@@ -2,10 +2,6 @@ import { Route, Routes } from 'react-router-dom'
 /**********   ADD PAGE ROUTE HERE   **********/
 import HomePage from './pages/Home/HomePage'
 import PrivateStorage from './pages/Resource/PrivateStorage'
-<<<<<<< HEAD
-import MyTestPage from './pages/Evaluation/MyTestPage'
-import StudentProfilePage from './pages/Evaluation/StudentProfilePage'
-=======
 import {
   ChangePassword,
   Confirmation,
@@ -14,10 +10,10 @@ import {
   ResetPassword,
 } from './pages/Authentication'
 import CourseStructure from './pages/Resource/CourseStructure'
-import FileDetails from './pages/Resource/FileDetails'
 import CurrentSesion from './pages/Sessions/CurrentSession'
 import RegisterSession from './pages/Sessions/RegisterSession'
->>>>>>> main
+import MyTestPage from './pages/Evaluation/MyTestPage'
+import StudentProfilePage from './pages/Evaluation/StudentProfilePage'
 
 function App() {
   return (
@@ -26,7 +22,6 @@ function App() {
       <Route path="/" element={<HomePage/>} />
       <Route path="/about" element={<h1>About Page</h1>} />
 
-<<<<<<< HEAD
       //! T.Hung below
       <Route path="/my-test" element={<MyTestPage />} />
       <Route 
@@ -34,7 +29,6 @@ function App() {
         element={<StudentProfilePage />} 
       />
       //! T.Hung over
-=======
       {/* LOGIN MODULE */}
       <Route path="/login" element={<Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
@@ -47,7 +41,6 @@ function App() {
       {/* SCHEDULE MODULE */}
       <Route path="/sessions" element={<CurrentSesion />} />
       <Route path="/sessions/register" element={<RegisterSession/>} />
->>>>>>> main
     </Routes>
   )
 }

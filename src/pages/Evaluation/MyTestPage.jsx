@@ -41,10 +41,10 @@ const MyTestPage = () => {
 
         {/* Table title bar (List of students) */}
         <div className="flex justify-between items-center bg-primary p-4 rounded-t-lg border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-black-800">List of students</h2>
+          <h2 className="text-lg font-semibold text-white">List of students</h2>
           <div className="flex gap-2">
-            <button className="text-gray-500 hover:text-blue-700"><FaCog /></button>
-            <button className="text-gray-500 hover:text-red-700"><FaTimes /></button>
+            <button className="text-white hover:text-blue-700"><FaCog /></button>
+            <button className="text-white hover:text-red-700"><FaTimes /></button>
           </div>
         </div>
 
@@ -78,7 +78,7 @@ const MyTestPage = () => {
                   <td className="p-4">
                     <button 
                       onClick={() => handleEditClick(student.id)}
-                      className="flex items-center gap-2 bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-700"
+                      className="flex items-center gap-2 bg-primary text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-secondary"
                     >
                       <FaEdit />
                       Edit

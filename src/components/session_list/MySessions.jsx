@@ -2,7 +2,7 @@ import MySessionsTutor from "./MySessionsTutor";
 import MySessionsStudent from "./MySessionsStudent";
 
 export default function MySessions() {
-  let isTutor = false;
+  let isTutor = true;
   if (!isTutor) {
     return (<MySessionsStudent/>);
   }
