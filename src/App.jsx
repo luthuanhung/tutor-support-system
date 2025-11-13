@@ -14,6 +14,7 @@ import CurrentSesion from './pages/Sessions/CurrentSession'
 import RegisterSession from './pages/Sessions/RegisterSession'
 import MyTestPage from './pages/Evaluation/MyTestPage'
 import StudentProfilePage from './pages/Evaluation/StudentProfilePage'
+import RegisterCourse from './pages/RegisterCourse/RegisterCourse'
 
 function App() {
   return (
@@ -41,6 +42,8 @@ function App() {
       {/* SCHEDULE MODULE */}
       <Route path="/sessions" element={<CurrentSesion />} />
       <Route path="/sessions/register" element={<RegisterSession/>} />
+      {/* REGISTER COURSE MODULE */}
+      <Route path="/register-course" element={<RegisterCourse />} />
     </Routes>
   )
 }
