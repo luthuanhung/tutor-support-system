@@ -1,14 +1,16 @@
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
-import RegisterPage from "../../components/session_list/RegisterPage";
+import MySessions from "../../components/session_list/MySessions";
 import { Link, useNavigate } from "react-router-dom";
-const RegisterSession = () => {
+export default function SchedulingPage({isTutor = true, isRegister = false}) {
   return (
     <div className="">
       <Header />
-      <RegisterPage />
+      <MySessions 
+        isTutor = {isTutor}
+        isRegister = {isRegister}
+      />
       <Footer />
     </div>
   );
 };
-export default RegisterSession;

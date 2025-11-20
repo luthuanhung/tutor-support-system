@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { TbMapPin, TbCalendarMonth, TbClock, TbFileDescription, TbUsers } from "react-icons/tb";
 
-export default function CreateEditAction({ type, selectedSession, onClose }) {
+export default function CreateEditAction({ sessions, setSessions, selectedSession, setSelectedSession, type, onClose }) {
   if (!type) return null;
   const isEdit = type === "edit";
   const tomorrow = new Date();
@@ -49,6 +49,29 @@ export default function CreateEditAction({ type, selectedSession, onClose }) {
     return Math.ceil(((date - yearStart) / 86400000 + 1) / 7);
   }
 
+  const handleSave = () => {
+    if (!selectedSession) return;
+
+    const updated = {
+      ...selectedSession,
+      title,
+      date,
+      startTime,
+      endTime,
+      location,
+      maxStudent: parseInt(maxStudents) || 0,
+      description,
+    };
+
+    // Update the session list
+    setSessions((prev) =>
+      prev.map((s) => (s.id === selectedSession.id ? updated : s))
+    );
+
+    // Update selected session for UI sync
+    setSelectedSession(updated);
+  };
+
   return (
     <div 
       className="fixed inset-0 bg-black/25 flex justify-center items-center z-50"
@@ -83,14 +106,14 @@ export default function CreateEditAction({ type, selectedSession, onClose }) {
           <input
             type="date"
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
             className="border rounded-md px-2 py-1 mr-5"
           />
           <input
             type="time"
             step="3600" // 60 min
             value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
             className="border rounded-md px-2 py-1"
           />
           <span>–</span>
@@ -98,7 +121,7 @@ export default function CreateEditAction({ type, selectedSession, onClose }) {
             type="time"
             step="3600"
             value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
             className="border rounded-md px-2 py-1"
           />
         </div>
@@ -128,7 +151,7 @@ export default function CreateEditAction({ type, selectedSession, onClose }) {
             type="text"
             placeholder="Add location"
             value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
             className="border rounded-md px-2 py-1"
           />
         </div>
@@ -140,7 +163,7 @@ export default function CreateEditAction({ type, selectedSession, onClose }) {
             type="number"
             placeholder="Set max students"
             value={maxStudents}
-            onChange={(e) => setMaxStudents(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
             className="border rounded-md px-2 py-1"
           />
         </div>
@@ -151,7 +174,7 @@ export default function CreateEditAction({ type, selectedSession, onClose }) {
           <textarea
             placeholder="Add description"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
             className="w-full border rounded-md p-2 mb-2"
             rows={3}
           ></textarea>
@@ -161,7 +184,10 @@ export default function CreateEditAction({ type, selectedSession, onClose }) {
         {/* Confirm */}
         <div className="flex justify-end">
           <button
-            onClick={onClose}
+            onClick={() => {
+              handleSave();
+              onClose();
+            }}
             className="px-5 py-1.5 border border-primary text-primary rounded-full hover:bg-primary hover:text-white transition"
           >
             Confirm

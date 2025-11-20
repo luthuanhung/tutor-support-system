@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function ConfirmAction({ type, selectedSession, onClose }) {
+export default function ConfirmAction({ sessions, setSessions, selectedSession, setSelectedSession, type, onClose }) {
   if (!type) return null;
   const navigate = useNavigate();
   const [reason, setReason] = useState("");
@@ -49,8 +49,8 @@ export default function ConfirmAction({ type, selectedSession, onClose }) {
         <div className="flex justify-end gap-3">
           <button
             onClick={() => {
-              onClose;
-              {!isCancel && navigate("/sessions")}
+              onClose();
+              if (!isCancel) navigate("/sessions"); 
             }}
             className="border border-primary text-primary font-medium py-2 px-4 rounded-full hover:bg-primary hover:text-white"
           >

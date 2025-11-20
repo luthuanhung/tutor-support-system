@@ -48,7 +48,7 @@ export default function Header() {
     };
 
     const navigate = useNavigate();
-    const navItems = coordinatorHeaderList; // This can be modified to switch between different header lists
+    const navItems = defaultHeaderList; // This can be modified to switch between different header lists
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [showUserMenu, setShowUserMenu] = useState(false);
 
