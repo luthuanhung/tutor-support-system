@@ -1,11 +1,24 @@
 import { TbSettings2, TbTrashX } from "react-icons/tb";
 import formatSessionTime from "./formatSessionTime";
 
-export default function SessionList({sessions, click, isTutor = false}) {
+export default function SessionList({sessions, click, isTutor = false, user = null, isRegister = false, search}) {
+
+  // Filtered sessions
+  const filteredSessions = isRegister? sessions.filter((session) => {
+    if (user) {
+      return (!session.students.some(student => student.studentID === user.id)) && (search? (session.courseID.includes(search) || session.tutor.includes(search)) : true);
+    }
+    return true; // fallback, show all if no filter
+  }) : sessions.filter((session) => {
+    if (user) {
+      return (session.tutorID === user.id) || (session.students.some(student => student.studentID === user.id));
+    }
+    return true; // fallback, show all if no filter
+  })
 
   return (
     <div className="space-y-3">
-      {sessions.map((session, index) => (
+      {filteredSessions.map((session, index) => (
         <div
           key={index}
           onClick={() => {click(session);}}

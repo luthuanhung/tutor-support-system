@@ -5,6 +5,8 @@ import MySessionsStudent from "./MySessionsStudent";
 import RegisterPage from "./RegisterPage";
 
 export default function MySessions({isTutor, isRegister}) {
+  const student = {name: "Nguyen Van B", id: 2390001};
+  const tutor = {name: "Lê Minh Hào", id: 2310846};
   const [sessions, setSessions] = useState(sessionData);
   const [selectedSession, setSelectedSession] = useState(null);
   if (isRegister) {
@@ -13,6 +15,7 @@ export default function MySessions({isTutor, isRegister}) {
               setSessions = {setSessions}
               selectedSession = {selectedSession}
               setSelectedSession = {setSelectedSession}
+              user = {student}
             />);
   } else {
     if (!isTutor) {
@@ -21,6 +24,7 @@ export default function MySessions({isTutor, isRegister}) {
                 setSessions = {setSessions}
                 selectedSession = {selectedSession}
                 setSelectedSession = {setSelectedSession}
+                user = {student}
               />);
     } else {
       return (<MySessionsTutor
@@ -28,6 +32,7 @@ export default function MySessions({isTutor, isRegister}) {
                 setSessions = {setSessions}
                 selectedSession = {selectedSession}
                 setSelectedSession = {setSelectedSession}
+                user = {tutor}
               />);
     }
   }

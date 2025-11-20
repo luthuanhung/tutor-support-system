@@ -3,7 +3,7 @@ import ConfirmAction from "./ConfirmAction";
 import CreateEditAction from "./CreateEditAction";
 import SessionStatusRegister from "./SessionStatusRegister";
 
-export default function Modal({sessions, setSessions, selectedSession, setSelectedSession, type, onClose}) {
+export default function Modal({sessions, setSessions, selectedSession, setSelectedSession, type, onClose, user = null}) {
   if (!type && !selectedSession) return null;
   if (type === "record") {
     return (
@@ -22,6 +22,7 @@ export default function Modal({sessions, setSessions, selectedSession, setSelect
         setSelectedSession = {setSelectedSession}
         type={type}
         onClose={onClose}
+        user={user}
       />
     );
   } else if (type === "create" || type === "edit") {
@@ -33,6 +34,7 @@ export default function Modal({sessions, setSessions, selectedSession, setSelect
         setSelectedSession = {setSelectedSession}
         type={type}
         onClose={onClose}
+        user={user}
       />
     );
   } else if (type === "register") {

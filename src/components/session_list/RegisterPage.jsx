@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { TbSearch } from "react-icons/tb";
 import Modal from "./Modal";
 import SessionList from "./SessionList";
 
-export default function RegisterPage({sessions, setSessions, selectedSession, setSelectedSession}) {
+export default function RegisterPage({sessions, setSessions, selectedSession, setSelectedSession, user}) {
   const navigate = useNavigate();
   const [type, setType] = useState(null);
   const [search, setSearch] = useState("");
@@ -19,7 +18,7 @@ export default function RegisterPage({sessions, setSessions, selectedSession, se
         onDoubleClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between mb-4 border border-text-primary rounded-xl">
+        <div className="flex items-center mb-4 border border-text-primary rounded-xl">
           <input
             type="text"
             value={search}
@@ -27,9 +26,6 @@ export default function RegisterPage({sessions, setSessions, selectedSession, se
             placeholder="Search by tutor’s name or course ID"
             className="w-full p-2 focus:outline-none text-2xl text-text-primary"
           />
-          <button className="p-2 hover:bg-text-primary/20 rounded-full transition text-text-primary">
-            <TbSearch size={26} />
-          </button>
         </div>
 
         {/* Session List */}
@@ -41,15 +37,22 @@ export default function RegisterPage({sessions, setSessions, selectedSession, se
           }}
           setSessions = {setSessions}
           setSelectedSession = {setSelectedSession}
+          user = {user}
+          isRegister = {true}
+          search = {search}
         />
         {/* Action */}
         <Modal
+          sessions = {sessions}
+          setSessions = {setSessions}
+          selectedSession = {selectedSession}
+          setSelectedSession = {setSelectedSession}
           type={type}
-          selectedSession={selectedSession}
           onClose={(type = null, session = null) => {
             setType(type);
             setSelectedSession(session);
           }}
+          user = {user}
         />
       </div>
     </div>

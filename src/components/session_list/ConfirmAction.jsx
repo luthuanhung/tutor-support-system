@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function ConfirmAction({ sessions, setSessions, selectedSession, setSelectedSession, type, onClose }) {
+export default function ConfirmAction({ sessions, setSessions, selectedSession, setSelectedSession, type, onClose, user = null }) {
   if (!type) return null;
   const navigate = useNavigate();
-  const [reason, setReason] = useState("");
+  const [reason, setReason] = useState(selectedSession?.reason || "");
 
   let confirmationText = "";
   let isCancel = false;
@@ -16,6 +16,35 @@ export default function ConfirmAction({ sessions, setSessions, selectedSession, 
     confirmationText = "Are you sure you want to cancel this session?";
     isCancel = true;
   }
+
+  const handleCancelSave = () => {
+    if (!selectedSession) return;
+
+    const updated = {
+      ...selectedSession,
+      state: "Canceled",
+      reason,
+    };
+
+    // Update the session list
+    setSessions((prev) =>
+      prev.map((s) => (s.id === selectedSession.id ? updated : s))
+    );
+  };
+
+  const handleRegisterSave = () => {
+    if (!selectedSession) return;
+
+    const updated = {
+      ...selectedSession,
+      students: [...selectedSession.students, {studentName: user.name, studentID: user.id, description: ""}]
+    };
+
+    // Update the session list
+    setSessions((prev) =>
+      prev.map((s) => (s.id === selectedSession.id ? updated : s))
+    );
+  };
   
   return (
     <div 
@@ -49,8 +78,14 @@ export default function ConfirmAction({ sessions, setSessions, selectedSession, 
         <div className="flex justify-end gap-3">
           <button
             onClick={() => {
-              onClose();
-              if (!isCancel) navigate("/sessions"); 
+              if (isCancel) {
+                handleCancelSave();
+                onClose();
+              } else {
+                handleRegisterSave();
+                onClose();
+                navigate("/sessions");
+              }
             }}
             className="border border-primary text-primary font-medium py-2 px-4 rounded-full hover:bg-primary hover:text-white"
           >

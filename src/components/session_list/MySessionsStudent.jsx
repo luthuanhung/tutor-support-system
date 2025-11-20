@@ -5,9 +5,8 @@ import SessionStatusStudent from "./SessionStatusStudent";
 import SessionList from "./SessionList";
 import Notification from "../notification/Notification";
 
-export default function MySessionsStudent({sessions, setSessions, selectedSession, setSelectedSession}) {
+export default function MySessionsStudent({sessions, setSessions, selectedSession, setSelectedSession, user}) {
   const navigate = useNavigate();
-  const studentID = 2390001;
   const [showNoti, setShowNoti] = useState(false);
 
   return (
@@ -36,15 +35,16 @@ export default function MySessionsStudent({sessions, setSessions, selectedSessio
 
       {/* Session List */}
       <SessionList
-        sessions={sessions}
-        click={(session, type = null) => {
+        sessions = {sessions}
+        click = {(session, type = null) => {
           setSelectedSession(session);
         }}
+        user = {user}
       />
 
       {/* Action */}
       <SessionStatusStudent
-        studentID={studentID}
+        studentID={user.id}
         selectedSession={selectedSession}
         onClose={() => setSelectedSession(null)}
       />
