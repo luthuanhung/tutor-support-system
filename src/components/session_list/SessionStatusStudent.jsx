@@ -36,9 +36,7 @@ export default function SessionStatusTutor( {studentID, selectedSession, onClose
             <TbClock /> {formatSessionTime(selectedSession.date, selectedSession.startTime, selectedSession.endTime)}
           </div>
           <div className="flex items-center gap-1">
-            <TbMapPin /> 
-            {selectedSession.location && (<p>{selectedSession.location}</p>)}
-            {selectedSession.link && (<a href={selectedSession.link} target="_blank" rel="noreferrer" className="hover:underline"> {"Online"}</a>)}
+            <TbMapPin /> {selectedSession.location}
           </div>
           <div className="flex items-center gap-1">
             <TbUsers /> {selectedSession.students.length}/{selectedSession.maxStudent}

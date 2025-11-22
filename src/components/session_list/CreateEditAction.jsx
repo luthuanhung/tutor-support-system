@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { TbMapPin, TbCalendarMonth, TbClock, TbFileDescription, TbUsers } from "react-icons/tb";
 
-export default function CreateEditAction({ type, selectedSession, onClose }) {
+export default function CreateEditAction({ sessions, setSessions, selectedSession, setSelectedSession, type, onClose, user }) {
   if (!type) return null;
   const isEdit = type === "edit";
   const tomorrow = new Date();
@@ -48,6 +48,50 @@ export default function CreateEditAction({ type, selectedSession, onClose }) {
     const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
     return Math.ceil(((date - yearStart) / 86400000 + 1) / 7);
   }
+
+  const handleEditSave = () => {
+    if (!selectedSession) return;
+
+    const updated = {
+      ...selectedSession,
+      title,
+      date,
+      startTime,
+      endTime,
+      location,
+      maxStudent: parseInt(maxStudents) || 0,
+      description,
+    };
+
+    // Update the session list
+    setSessions((prev) =>
+      prev.map((s) => (s.id === selectedSession.id ? updated : s))
+    );
+  };
+
+  const handleCreateSave = () => {
+  // Build new session object
+  const newSession = {
+    id: sessions.length + 1,                     // generate unique id
+    title,
+    date,
+    startTime,
+    endTime,
+    location,
+    maxStudent: parseInt(maxStudents) || 0,
+    description,
+    courseName: "Software Engineering",
+    courseID: "CO3001",
+    tutorID: user.id,
+    tutor: user.name,
+    state: "Upcoming",
+    students: [],
+    reason: "",
+  };
+
+  // Add to session list
+  setSessions((prev) => [...prev, newSession]);
+};
 
   return (
     <div 
@@ -161,7 +205,11 @@ export default function CreateEditAction({ type, selectedSession, onClose }) {
         {/* Confirm */}
         <div className="flex justify-end">
           <button
-            onClick={onClose}
+            onClick={() => {
+              if (isEdit) {handleEditSave();}
+              else {handleCreateSave();}
+              onClose();
+            }}
             className="px-5 py-1.5 border border-primary text-primary rounded-full hover:bg-primary hover:text-white transition"
           >
             Confirm

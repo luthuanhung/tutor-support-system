@@ -10,8 +10,7 @@ import {
   ResetPassword,
 } from './pages/Authentication'
 import CourseStructure from './pages/Resource/CourseStructure'
-import CurrentSesion from './pages/Sessions/CurrentSession'
-import RegisterSession from './pages/Sessions/RegisterSession'
+import SchedulingPage from './pages/Sessions/SchedulingPage'
 import MyTestPage from './pages/Evaluation/MyTestPage'
 import StudentProfilePage from './pages/Evaluation/StudentProfilePage'
 import RegisterCourse from './pages/RegisterCourse/RegisterCourse'
@@ -40,8 +39,8 @@ function App() {
       <Route path="/user/private" element={<PrivateStorage />} />
       <Route path="/courses" element={<CourseStructure/>} />
       {/* SCHEDULE MODULE */}
-      <Route path="/sessions" element={<CurrentSesion />} />
-      <Route path="/sessions/register" element={<RegisterSession/>} />
+      <Route path="/sessions" element={<SchedulingPage isTutor = {true} />} />
+      <Route path="/sessions/register" element={<SchedulingPage isRegister = {true} />} />
       {/* REGISTER COURSE MODULE */}
       <Route path="/register-course" element={<RegisterCourse />} />
     </Routes>
