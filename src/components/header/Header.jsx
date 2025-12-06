@@ -341,7 +341,7 @@ export default function Header({TabList = 1}) {
                             }}
                             className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full text-left"
                             >
-                            <FaChartPie className="h-5 w-5" /> Analyze Data
+                            <FaChartPie className="h-5 w-5" /> Statistical
                             </button>
                         </li>
                         <li>
