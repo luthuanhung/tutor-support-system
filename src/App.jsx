@@ -17,6 +17,10 @@ import {
 import CourseStructure from './pages/Resource/CourseStructure'
 import SchedulingPage from './pages/Sessions/SchedulingPage'
 import RegisterCourse from './pages/RegisterCourse/RegisterCourse'
+import FileDetails from './pages/Resource/FileDetails'
+import TutorAvailability from './pages/RegisterCourse/TutorAvailability'
+import CreateClass from './pages/RegisterCourse/CreateClass'
+import ManageProgram from './pages/RegisterCourse/ProgramManagement'
 import CourseStructureStudent from './pages/Resource/CourseStructureStudent'
 
 function App() {
@@ -49,6 +53,9 @@ function App() {
       <Route path="/sessions/tutor" element={<SchedulingPage isTutor = {true} />} />
       {/* REGISTER COURSE MODULE */}
       <Route path="/register-course" element={<RegisterCourse />} />
+      <Route path="/set-availability" element={<TutorAvailability />} />
+      <Route path="/create-program" element={<CreateClass />} />
+      <Route path="/manage-program" element={<ManageProgram />} />
     </Routes>
   )
 }
