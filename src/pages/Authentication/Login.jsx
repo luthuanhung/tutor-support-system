@@ -25,7 +25,7 @@ export const Login = () => {
     }
 
     if (user) {
-      localStorage.setItem('currentUser', JSON.stringify(user));
+      sessionStorage.setItem('currentUser', JSON.stringify(user));
       navigate('/');
     } else {
       alert('Invalid username or password');

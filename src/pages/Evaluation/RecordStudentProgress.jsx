@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
-// Import các component con
+// Import các component con giao diện
 import FormRow from '../../components/evaluation/Form/FormRow';
 import FormInput from '../../components/evaluation/Form/FormInput';
-import { sendNotification } from '../../../lib/notificationHelper';
 import FormSelect from '../../components/evaluation/Form/FormSelect';
 import ProfileSection from '../../components/evaluation/Profile/ProfileSection';
 import AvatarUploader from '../../components/evaluation/Profile/AvatarUploader';
 
+// --- QUAN TRỌNG: Import hàm gửi thông báo ---
+// Hãy đảm bảo bạn đã tạo file này tại đường dẫn tương ứng
+import { sendNotification } from '../../../lib/notificationHelper'; 
+
 const RecordStudentProgress = () => {
   const { studentId } = useParams();
   const navigate = useNavigate();
-  const storageKey = `draft_progress_${studentId}`;
+  // Key để lưu nháp vào localStorage (Test Case 003_3)
+  const storageKey = `draft_progress_${studentId || 'default'}`;
 
-  // Dữ liệu hard-code
+  // Dữ liệu hard-code giả lập lấy từ DB
   const studentData = {
     id: 2352429,
     firstName: "Hung",
@@ -34,12 +38,14 @@ const RecordStudentProgress = () => {
     gradYear: "2027",
     gpa: "4.0",
     admissionDate: "28/10/2023",
+    // Giá trị mặc định (nếu chưa nhập)
     score_assignment: "10.0",
     score_midterm: "10.0",
     score_final: "10.0",
     feedback: "This is a very good student. He always try him best to complete my tasks."
   };
 
+  // State quản lý dữ liệu form
   const [formData, setFormData] = useState({
     score_assignment: studentData.score_assignment,
     score_midterm: studentData.score_midterm,
@@ -49,14 +55,16 @@ const RecordStudentProgress = () => {
 
   const [errors, setErrors] = useState({});
 
+  // --- 1. LOAD DRAFT (Tải bản nháp nếu có) ---
   useEffect(() => {
     const savedDraft = localStorage.getItem(storageKey);
     if (savedDraft) {
       setFormData(JSON.parse(savedDraft));
-      console.log("Draft loaded.");
+      // console.log("Draft loaded from LocalStorage.");
     }
   }, [storageKey]);
 
+  // Hàm validate dữ liệu
   const validate = () => {
     const newErrors = {};
     if (!formData.score_assignment) newErrors.score_assignment = "Assignment score is required";
@@ -66,31 +74,44 @@ const RecordStudentProgress = () => {
     return newErrors;
   };
 
+  // Hàm xử lý khi thay đổi input
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // --- 2. SAVE DRAFT (Lưu nháp) ---
   const handleSaveDraft = () => {
     localStorage.setItem(storageKey, JSON.stringify(formData));
     alert("Draft saved successfully! You can resume later.");
   };
 
+  // --- 3. SUBMIT REPORT (Gửi báo cáo) ---
   const handleSubmit = (event) => {
     event.preventDefault();
+    
+    // Validate trước
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       alert("Please fill in all required fields");
       return;
     }
+    
+    // Nếu hợp lệ:
     setErrors({});
-    alert("Success: Student progress has been recorded.");
-    console.log("Submitting:", formData);
+    
+    // a. Xóa bản nháp (vì đã nộp xong)
     localStorage.removeItem(storageKey);
-    sendNotification('admin', 'Tutor has submitted a progress report');
-    // Đây là nơi xử lý logic submit, ví dụ:
-    // navigate('/path-to-success-page');
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // b. Gửi thông báo cho Admin (Pass Test Case Notification)
+    // Cấu trúc: sendNotification(role_người_nhận, nội_dung)
+    sendNotification('admin', `Tutor submitted progress report for ${studentData.firstName} ${studentData.lastName} (${studentData.id})`);
+    
+    // c. Thông báo thành công & Chuyển trang
+    console.log("Submitting Report:", formData);
+    alert("Success: Student progress has been recorded and sent to the Department.");
+    navigate(-1); // Quay lại trang trước
   };
 
   return (
@@ -106,7 +127,7 @@ const RecordStudentProgress = () => {
           <span className="text-sm text-gray-500">Last update: 29/10/2023 12:52:42</span>
         </div>
 
-        {/* Section 1: Personal Info */}
+        {/* Section 1: Personal Info (Read-only mostly) */}
         <ProfileSection title="Personal Information">
           <div className="flex flex-col md:flex-row gap-8">
             <AvatarUploader defaultImageUrl={studentData.imageUrl} />
@@ -176,7 +197,7 @@ const RecordStudentProgress = () => {
           </FormRow>
         </ProfileSection>
 
-        {/* Section 3: Score */}
+        {/* Section 3: Score (Editable) */}
         <ProfileSection 
           title="Score" 
           contentClassName="grid grid-cols-1 md:grid-cols-3 gap-x-6"
@@ -213,7 +234,7 @@ const RecordStudentProgress = () => {
           </FormRow>
         </ProfileSection>
 
-        {/* Section 4: Feedback */}
+        {/* Section 4: Feedback (Editable) */}
         <ProfileSection title="Written Feedback">
           <textarea 
             rows="5"
@@ -221,19 +242,33 @@ const RecordStudentProgress = () => {
             className={`w-full p-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ${errors.feedback ? 'border-red-500' : 'border-gray-300'}`}
             value={formData.feedback}
             onChange={handleChange}
+            placeholder="Enter your feedback here..."
           />
           {errors.feedback && <p className="text-red-500 text-xs mt-1">{errors.feedback}</p>}
         </ProfileSection>
 
         {/* Action Buttons */}
         <div className="flex justify-end gap-4">
-          <button type="button" onClick={handleSaveDraft} className="bg-yellow-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-yellow-600">
+          <button 
+            type="button" 
+            onClick={handleSaveDraft} 
+            className="bg-yellow-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-yellow-600 shadow-sm transition-colors"
+          >
             Save Draft
           </button>
-          <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-700">
-            Submit
+          
+          <button 
+            type="submit" 
+            className="bg-blue-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-700 shadow-sm transition-colors"
+          >
+            Submit Report
           </button>
-          <button type="button" onClick={() => navigate(-1)} className="bg-gray-100 text-gray-700 px-6 py-2 rounded-md font-semibold hover:bg-gray-200 border border-gray-300">
+          
+          <button 
+            type="button" 
+            onClick={() => navigate(-1)} 
+            className="bg-gray-100 text-gray-700 px-6 py-2 rounded-md font-semibold hover:bg-gray-200 border border-gray-300 transition-colors"
+          >
             Cancel
           </button>
         </div>

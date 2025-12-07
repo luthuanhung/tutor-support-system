@@ -46,7 +46,7 @@ export default function Header({TabList = 1}) {
     const [unreadCount, setUnreadCount] = useState(0); // Số lượng thông báo chưa đọc
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('currentUser');
+        const storedUser = sessionStorage.getItem('currentUser');
         if (storedUser) {
             setUser(JSON.parse(storedUser));
             setIsAuthenticated(true);
@@ -88,7 +88,7 @@ export default function Header({TabList = 1}) {
 
 
     const handleLogout = () => {
-        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('currentUser');
         setUser(null);
         setIsAuthenticated(false);
         setUnreadCount(0); // Reset thông báo
